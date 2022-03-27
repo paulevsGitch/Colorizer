@@ -5,8 +5,8 @@ import net.modificationstation.stationapi.api.event.mod.InitEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.ModID;
 import paulevs.bhcore.interfaces.CustomSectionData;
-import paulevs.bhcore.storage.EnumArraySectionData;
-import paulevs.bhcore.storage.SectionDataHandler;
+import paulevs.bhcore.storage.section.SectionDataHandler;
+import paulevs.bhcore.storage.section.arrays.EnumArraySectionData;
 import paulevs.colorizer.enums.BlockColor;
 
 public class InitListener {
@@ -21,6 +21,6 @@ public class InitListener {
 	}
 	
 	private static CustomSectionData makeColorArray() {
-		return new EnumArraySectionData<>(4096, BlockColor.class);
+		return new EnumArraySectionData<>(4096, BlockColor.class, true);
 	}
 }
