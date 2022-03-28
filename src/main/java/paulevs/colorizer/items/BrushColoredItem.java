@@ -8,13 +8,12 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import paulevs.bhcore.storage.section.SectionDataHandler;
 import paulevs.bhcore.storage.section.arrays.EnumArraySectionData;
-import paulevs.bhcore.util.ClientUtil;
 import paulevs.bhcore.util.MathUtil;
 import paulevs.colorizer.enums.BlockColor;
 import paulevs.colorizer.listeners.InitListener;
 
-public class SpatulaItem extends TemplateItemBase {
-	public SpatulaItem(Identifier identifier) {
+public class BrushColoredItem extends TemplateItemBase {
+	public BrushColoredItem(Identifier identifier) {
 		super(identifier);
 		setTranslationKey(identifier.id);
 		setMaxStackSize(1);
@@ -31,11 +30,9 @@ public class SpatulaItem extends TemplateItemBase {
 			return false;
 		}
 		
-		int index = MathUtil.getIndex16(x & 15, y & 15, z & 15);
-		if (data.getData(index) == null) return false;
-		
-		data.setData(index, null);
-		ClientUtil.updateBlock(level, x, y, z);
+		BlockColor value = BlockColor.getByIndex(level.rand.nextInt(BlockColor.getCount()));
+		data.setData(MathUtil.getIndex16(x & 15, y & 15, z & 15), value);
+		level.method_202(x, y, z, x, y, z);
 		
 		return true;
 	}

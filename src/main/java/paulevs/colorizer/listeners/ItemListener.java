@@ -7,6 +7,7 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.ModID;
+import paulevs.colorizer.items.BrushColoredItem;
 import paulevs.colorizer.items.BrushItem;
 import paulevs.colorizer.items.SpatulaItem;
 
@@ -19,6 +20,7 @@ public class ItemListener {
 	@EventListener
 	public void onInit(ItemRegistryEvent event) {
 		register(event.registry, "brush", BrushItem::new);
+		register(event.registry, "brush_colored", BrushColoredItem::new);
 		register(event.registry, "spatula", SpatulaItem::new);
 	}
 	

@@ -22,7 +22,8 @@
 	"entrypoints": {
 		"stationapi:event_bus": [
 			"paulevs.colorizer.listeners.InitListener",
-			"paulevs.colorizer.listeners.ItemListener"
+			"paulevs.colorizer.listeners.ItemListener",
+			"paulevs.colorizer.listeners.BlockListener"
 		]
 	},
 	"mixins": [
