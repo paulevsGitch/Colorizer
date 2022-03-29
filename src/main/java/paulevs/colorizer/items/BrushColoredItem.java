@@ -13,11 +13,14 @@ import paulevs.colorizer.enums.BlockColor;
 import paulevs.colorizer.listeners.InitListener;
 
 public class BrushColoredItem extends TemplateItemBase {
-	public BrushColoredItem(Identifier identifier) {
+	private final BlockColor color;
+	
+	public BrushColoredItem(Identifier identifier, BlockColor color) {
 		super(identifier);
 		setTranslationKey(identifier.id);
 		setMaxStackSize(1);
 		setDurability(100);
+		this.color = color;
 	}
 	
 	@Override
@@ -30,8 +33,7 @@ public class BrushColoredItem extends TemplateItemBase {
 			return false;
 		}
 		
-		BlockColor value = BlockColor.getByIndex(level.rand.nextInt(BlockColor.getCount()));
-		data.setData(MathUtil.getIndex16(x & 15, y & 15, z & 15), value);
+		data.setData(MathUtil.getIndex16(x & 15, y & 15, z & 15), color);
 		level.method_202(x, y, z, x, y, z);
 		
 		return true;

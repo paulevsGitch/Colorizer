@@ -5,7 +5,8 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [],
 	"client": [
-		"BlockColorMixin"
+		"BlockColorMixin",
+		"ItemColoursMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

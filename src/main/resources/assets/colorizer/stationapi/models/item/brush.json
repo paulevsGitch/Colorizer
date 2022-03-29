@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "colorizer:item/brush"
-  }
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "colorizer:item/brush"
+	}
 }
