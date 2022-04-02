@@ -16,7 +16,7 @@ import paulevs.colorizer.listeners.InitListener;
 public class SpatulaItem extends TemplateItemBase {
 	public SpatulaItem(Identifier identifier) {
 		super(identifier);
-		setTranslationKey(identifier.id);
+		setTranslationKey(identifier.modID, identifier.id);
 		setMaxStackSize(1);
 		setDurability(100);
 	}

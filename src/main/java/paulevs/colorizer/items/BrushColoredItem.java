@@ -17,7 +17,7 @@ public class BrushColoredItem extends TemplateItemBase {
 	
 	public BrushColoredItem(Identifier identifier, BlockColor color) {
 		super(identifier);
-		setTranslationKey(identifier.id);
+		setTranslationKey(identifier.modID, identifier.id);
 		setMaxStackSize(1);
 		setDurability(100);
 		this.color = color;

@@ -8,10 +8,10 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.registry.ModID;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import paulevs.colorizer.enums.BlockColor;
 import paulevs.colorizer.items.BrushColoredItem;
 import paulevs.colorizer.items.BrushItem;
+import paulevs.colorizer.items.DyeItem;
 import paulevs.colorizer.items.SpatulaItem;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ public class ItemListener {
 		spatula = register(event.registry, "spatula", SpatulaItem::new);
 		
 		for (BlockColor color: BlockColor.getColors()) {
-			dyeByColor.put(color, register(event.registry, "dye_" + color.getName(), TemplateItemBase::new));
+			dyeByColor.put(color, register(event.registry, "dye_" + color.getName(), DyeItem::new));
 			Identifier brushID = modID.id("brush_" + color.getName());
 			BrushColoredItem coloredBrush = new BrushColoredItem(brushID, color);
 			event.registry.register(brushID, coloredBrush);

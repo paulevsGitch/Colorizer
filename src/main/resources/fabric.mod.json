@@ -22,7 +22,8 @@
 	"entrypoints": {
 		"stationapi:event_bus": [
 			"paulevs.colorizer.listeners.InitListener",
-			"paulevs.colorizer.listeners.ItemListener"
+			"paulevs.colorizer.listeners.ItemListener",
+			"paulevs.colorizer.listeners.CreativeListener"
 		],
 		"stationapi:event_bus_client": [
 			"paulevs.colorizer.listeners.ColorProviderListener"
@@ -35,6 +36,7 @@
 	"depends": {
 		"minecraft": "1.0.0-beta.7.3",
 		"bhcore": "*",
-		"stationapi": "*"
+		"stationapi": "*",
+		"bhcreative": "*"
 	}
 }
