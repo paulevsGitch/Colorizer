@@ -1,5 +1,7 @@
 package paulevs.colorizer.items;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
@@ -10,6 +12,7 @@ import paulevs.bhcore.storage.section.SectionDataHandler;
 import paulevs.bhcore.storage.section.arrays.EnumArraySectionData;
 import paulevs.bhcore.util.ClientUtil;
 import paulevs.bhcore.util.MathUtil;
+import paulevs.colorizer.ColorizerClient;
 import paulevs.colorizer.enums.BlockColor;
 import paulevs.colorizer.listeners.InitListener;
 
@@ -35,8 +38,15 @@ public class SpatulaItem extends TemplateItemBase {
 		if (data.getData(index) == null) return false;
 		
 		data.setData(index, null);
+		if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+			updateClient(level, x >> 4, y >> 4, z >> 4);
+		}
 		ClientUtil.updateBlock(level, x, y, z);
 		
 		return true;
+	}
+	
+	private void updateClient(Level level, int x, int y, int z) {
+		ColorizerClient.updateSection(level, x, y, z);
 	}
 }
