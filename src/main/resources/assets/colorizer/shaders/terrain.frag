@@ -10,10 +10,11 @@ uniform vec2 dataScale;
 uniform vec2 sectionUV;
 uniform int dataSide;
 
-in vec2 textureCoord;
-in vec3 vertexColor;
-// in vec3 sectionPos;
-in vec3 blockPos;
+in vec2 geo_textureCoord;
+in vec3 geo_vertexColor;
+in vec3 geo_blockPos;
+in vec3 geo_normal;
+in vec4 geo_fogColor;
 
 out vec4 color;
 
@@ -61,9 +62,9 @@ vec2 indexToUV(int textureSize, int index) {
 }
 
 int getBlockIndex() {
-	int blockX = int(blockPos.x);
-	int blockY = int(blockPos.y);
-	int blockZ = int(blockPos.z);
+	int blockX = int(geo_blockPos.x);
+	int blockY = int(geo_blockPos.y);
+	int blockZ = int(geo_blockPos.z);
 	return blockX * 256 + blockY * 16 + blockZ;
 }
 
@@ -76,10 +77,23 @@ int wrap(int value, int side) {
 	return int(delta * side);
 }
 
+float overlayBlend(float a, float b) {
+	if (a < 0.5) {
+		return 2 * a * b;
+	}
+	else {
+		return 1.0 - 2.0 * (1.0 - a) * (1.0 - b);
+	}
+}
+
+vec3 overlay(vec3 a, vec3 b) {
+	return vec3(overlayBlend(a.r, b.r), overlayBlend(a.g, b.g), overlayBlend(a.b, b.b));
+}
+
 void main() {
 	int textureSize = textureSize(dataTexture, 0).x;
-	vec4 tex = texture(terrainTexture, textureCoord);
-	color = vec4(tex.rgb * vertexColor, tex.a);
+	vec4 tex = texture(terrainTexture, geo_textureCoord);
+	color = vec4(tex.rgb * geo_vertexColor, tex.a);
 	
 	int scaleX = int(dataScale.x);
 	int scaleY = int(dataScale.y);
@@ -104,11 +118,37 @@ void main() {
 		int colorData = int(texture(dataTexture, uv).r * 255);
 		if (colorData > 0) {
 			vec3 blockColor = blockColors[colorData - 1];
-			//float intensity = (max(color.r, max(color.g, color.b)) - 0.5) * 0.5;
-			//color.rgb = blockColor + vec3(intensity);
-			float intensity = min(color.r, min(color.g, color.b)) * 3;
+			// float intensity = (max(color.r, max(color.g, color.b)) - 0.5) * 0.5;
+			// color.rgb = blockColor + vec3(intensity);
+			
+			// float intensity = min(tex.r, min(tex.g, tex.b)) * 3;
+			// intensity = clamp(intensity, 0.0, 1.0);
+			// color.rgb = blockColor * intensity;
+			// 
+			// intensity = min(color.r, min(color.g, color.b)) * 2;
+			// intensity = clamp(intensity, 0.0, 1.0);
+			// color.rgb *= intensity;
+			
+			// float intensity = (tex.r + tex.g + tex.b) * 0.5;// * 0.5;
+			// intensity = clamp(intensity, 0.0, 1.0);
+			// 
+			// vec3 dark = blockColor - vec3(0.15);//* 0.8;
+			// vec3 bright = blockColor + vec3(0.15);
+			// 
+			// color.rgb = mix(dark, bright, intensity);
+			// 
+			// intensity = (geo_vertexColor.r + geo_vertexColor.g + geo_vertexColor.b) * 0.5;
+			// intensity = clamp(intensity, 0.0, 1.0);
+			// color.rgb *= intensity;
+			
+			// color.rgb = blockColor.rgb * 0.5 + 0.5 * overlay(tex.rgb, blockColor.rgb);
+			
+			
+			float intensity = (geo_vertexColor.r + geo_vertexColor.g + geo_vertexColor.b) * 0.5;
 			intensity = clamp(intensity, 0.0, 1.0);
-			color.rgb = blockColor * intensity;
+			color.rgb = overlay(tex.rgb, blockColor.rgb) * intensity;
 		}
 	}
+	
+	color.rgb = mix(color.rgb, geo_fogColor.rgb, geo_fogColor.a);
 }

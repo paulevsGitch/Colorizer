@@ -31,9 +31,11 @@ public class ColorizerClient {
 	private static TextureUniform dataTexture;
 	
 	public static void init() {
-		Shader vert = new Shader("/assets/colorizer/shaders/terrain.vert", ShaderType.VERTEX);
-		Shader frag = new Shader("/assets/colorizer/shaders/terrain.frag", ShaderType.FRAGMENT);
-		program = new ShaderProgram(vert, frag);
+		program = new ShaderProgram(
+			new Shader("/assets/colorizer/shaders/terrain.vert", ShaderType.VERTEX),
+			new Shader("/assets/colorizer/shaders/terrain.geom", ShaderType.GEOMETRY),
+			new Shader("/assets/colorizer/shaders/terrain.frag", ShaderType.FRAGMENT)
+		);
 		playerPos = program.getUniform("playerSectionPos", Vec3IUniform::new);
 		sectionPos = program.getUniform("currentSectionPos", Vec3IUniform::new);
 		dataScale = program.getUniform("dataScale", Vec2FUniform::new);
@@ -41,8 +43,9 @@ public class ColorizerClient {
 		dataTexture = program.getUniform("dataTexture", TextureUniform::new);
 		ShaderProgram.unbind();
 		
-		data = new WorldShaderData(4, 4, ((level, sectionPos, data) -> {
+		data = new WorldShaderData(8, 8, ((level, sectionPos, data) -> {
 			Chunk chunk = level.getChunkFromCache(sectionPos.x, sectionPos.z);
+			if (chunk.x != sectionPos.x || chunk.z != sectionPos.z) return;
 			ChunkSectionsAccessor accessor = (ChunkSectionsAccessor) chunk;
 			ChunkSection[] sections = accessor.getSections();
 			ChunkSection section = sections[sectionPos.y];
